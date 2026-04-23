@@ -1,0 +1,33 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  workflow_dispatch:
+
+permissions: read-all
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  ci:
+    uses: gpeyet-learning/.github/.github/workflows/guide-ci.yml@main
+    permissions:
+      contents: read
+      packages: write
+      issues: write
+      pull-requests: write
+      statuses: write
+    with:
+      hugo-version: "0.160.0"
+      dart-sass-version: "1.99.0"
+      go-version: "1.26.1"
+      node-version: "24.14.1"

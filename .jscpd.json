@@ -1,0 +1,3 @@
+{
+  "ignore": ["public/**", "themes/**", "resources/**"]
+}
