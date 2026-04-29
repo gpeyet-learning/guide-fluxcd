@@ -7,39 +7,48 @@ FluxCD n'est pas un seul programme monolithique. C'est un ensemble de **controll
 
 ## Vue d'ensemble
 
+### Flux principal
+
 ```mermaid
 graph TD
-    subgraph "Dépôts externes"
+    subgraph EXT["Dépôts externes"]
         GIT[Dépôt Git]
         HELM[Registre Helm]
         OCI[Registre OCI]
-        REG[Registre Docker]
     end
 
-    subgraph "Cluster Kubernetes — namespace flux-system"
+    subgraph CLUSTER["Cluster Kubernetes — namespace flux-system"]
         SC[Source Controller]
         KC[Kustomize Controller]
         HC[Helm Controller]
-        NC[Notification Controller]
-        IAC[Image Automation Controller]
     end
 
-    subgraph "Namespace applicatif"
-        APP[Ressources Kubernetes\nDeployment, Service, Secret...]
+    subgraph NS["Namespace applicatif"]
+        APP["Deployment · Service · Secret"]
     end
 
-    GIT -->|surveille| SC
-    HELM -->|surveille| SC
-    OCI -->|surveille| SC
-    REG -->|surveille| IAC
-
+    GIT --> SC
+    HELM --> SC
+    OCI --> SC
     SC -->|artefacts| KC
     SC -->|artefacts| HC
     KC -->|applique| APP
     HC -->|applique| APP
-    IAC -->|met à jour| GIT
-    NC -->|notifie| EXT[Slack, GitHub, Teams...]
 ```
+
+Le Source Controller surveille en continu les dépôts externes et produit des artefacts locaux. Le Kustomize Controller et le Helm Controller consomment ces artefacts pour déployer les ressources dans le cluster.
+
+### Flux complémentaires
+
+```mermaid
+graph LR
+    IAC[Image Automation Controller] -->|surveille| REG[Registre Docker]
+    IAC -->|met à jour| GIT[Dépôt Git]
+
+    NC[Notification Controller] -->|notifie| NOTIF["Slack · GitHub · Teams"]
+```
+
+L'Image Automation Controller surveille un registre Docker et met automatiquement à jour le dépôt Git quand une nouvelle image est publiée. Le Notification Controller achemine les événements Flux vers les outils externes.
 
 ## Source Controller
 
