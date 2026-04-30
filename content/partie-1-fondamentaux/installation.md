@@ -44,13 +44,32 @@ flux version
 # flux: v2.x ou supérieur
 ```
 
-**git** et un compte **GitHub** avec un token d'accès personnel.
+**git**, **gh CLI** et un compte **GitHub**.
 
-Le token GitHub doit avoir les permissions `repo` (accès aux dépôts privés). Créez-le sur [github.com/settings/tokens](https://github.com/settings/tokens) et exportez-le :
+Authentifiez-vous avec `gh` si ce n'est pas déjà fait :
 
 ```bash
-export GITHUB_TOKEN=ghp_votretoken
-export GITHUB_USER=votre-username
+gh auth login
+```
+
+Vérifiez que le scope `repo` est bien présent — il est requis par Flux pour créer des deploy keys et committer dans votre dépôt :
+
+```bash
+gh auth status
+# ✓ Logged in to github.com as <user> (scopes: gist, read:org, repo, workflow)
+```
+
+Si `repo` n'apparaît pas, ré-authentifiez avec :
+
+```bash
+gh auth login --scopes repo
+```
+
+Exportez ensuite votre nom d'utilisateur et le token :
+
+```bash
+export GITHUB_USER=$(gh api user --jq .login)
+export GITHUB_TOKEN=$(gh auth token)
 ```
 
 ## Créer le cluster k3d
@@ -261,7 +280,7 @@ Cela confirme que FluxCD surveille activement votre dépôt.
 
 ```mermaid
 graph LR
-    GIT[gitops-fleet\nclusters/local/] -->|surveille| SC[Source Controller]
+    SC[Source Controller] -->|surveille| GIT[gitops-fleet\nclusters/local/]
     SC -->|artefact| KC[Kustomize Controller]
     KC -->|applique| FS[flux-system\nnamespace]
 ```

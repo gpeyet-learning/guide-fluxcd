@@ -5,7 +5,7 @@ weight: 40
 
 FluxCD est installé. Il est temps de déployer une première application. Ce chapitre présente les deux ressources fondamentales de FluxCD : `GitRepository` (source) et `Kustomization` (réconciliation). Vous déployez Podinfo via des manifests Kubernetes bruts pour bien comprendre le mécanisme avant d'introduire Helm.
 
-## Podinfo, l'application fil rouge
+## Podinfo, l'application d'exemple
 
 [Podinfo](https://github.com/stefanprodan/podinfo) est une petite application web créée par Stefan Prodan — l'auteur de FluxCD. Elle est conçue spécifiquement pour démontrer des concepts Kubernetes et GitOps.
 
