@@ -205,7 +205,7 @@ Publier des manifests via OCI permet :
 
 À l'issue de ce guide, votre dépôt `gitops-fleet` ressemble à ceci :
 
-```
+```text
 gitops-fleet/
 ├── .sops.yaml
 ├── clusters/

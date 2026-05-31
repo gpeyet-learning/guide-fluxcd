@@ -92,7 +92,7 @@ La section `chart.spec` décrit quel chart utiliser et depuis quelle source. La 
 
 ## Structure du dépôt à ce stade
 
-```
+```text
 gitops-fleet/
 ├── clusters/
 │   └── local/

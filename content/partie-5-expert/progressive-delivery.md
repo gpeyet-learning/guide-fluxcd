@@ -216,7 +216,7 @@ Observez l'avancement en temps réel :
 watch kubectl get canary podinfo -n podinfo-staging
 ```
 
-```
+```text
 NAME      STATUS        WEIGHT  LASTTRANSITIONTIME
 podinfo   Progressing   10      2026-04-24T10:00:30Z
 podinfo   Progressing   20      2026-04-24T10:01:00Z
@@ -245,7 +245,7 @@ values:
 
 Flagger détecte la dégradation des métriques après quelques vérifications et rollback automatiquement vers la version stable :
 
-```
+```text
 NAME      STATUS    WEIGHT  LASTTRANSITIONTIME
 podinfo   Failed    0       2026-04-24T10:05:00Z
 ```
@@ -284,7 +284,7 @@ Déclenchez un déploiement (changez le message Podinfo) et observez :
 watch kubectl get canary podinfo -n podinfo-staging
 ```
 
-```
+```text
 WEIGHT  STATUS
 20      Progressing
 40      Progressing

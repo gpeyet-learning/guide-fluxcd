@@ -112,7 +112,7 @@ watch flux get helmrelease podinfo -n podinfo-staging
 
 Vous verrez la progression :
 
-```
+```text
 NAME     REVISION  SUSPENDED  READY   MESSAGE
 podinfo  6.7.1     False      False   Helm upgrade failed: ... retrying (1/3)
 podinfo  6.7.1     False      False   Helm upgrade failed: ... retrying (2/3)

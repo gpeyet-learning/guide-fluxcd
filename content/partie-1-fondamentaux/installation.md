@@ -122,7 +122,7 @@ flux check --pre
 
 Vous devez voir :
 
-```
+```text
 ► checking prerequisites
 ✔ Kubernetes 1.32.x >=1.28.0-0
 ✔ prerequisites checks passed
@@ -153,7 +153,7 @@ Ce que fait cette commande :
 
 Le bootstrap peut prendre une à deux minutes. Vous verrez des lignes de progression :
 
-```
+```text
 ► connecting to github.com
 ✔ repository "gitops-fleet" created
 ► cloning branch "main" from Git repository
@@ -175,7 +175,7 @@ Vérifiez que tous les controllers sont prêts :
 flux check
 ```
 
-```
+```text
 ► checking prerequisites
 ✔ Kubernetes 1.32.x >=1.28.0-0
 ► checking controllers
@@ -204,7 +204,7 @@ Et les ressources FluxCD :
 flux get all -n flux-system
 ```
 
-```
+```text
 NAME                            REVISION        SUSPENDED  READY
 GitRepository/flux-system       main/a1b2c3d    False      True
 Kustomization/flux-system       main/a1b2c3d    False      True
@@ -221,7 +221,7 @@ git pull
 
 La structure est la suivante :
 
-```
+```text
 gitops-fleet/
 └── clusters/
     └── local/
@@ -268,7 +268,7 @@ kubectl logs -n flux-system deploy/source-controller --tail=20
 
 Vous verrez des lignes du type :
 
-```
+```text
 "msg":"stored artifact for commit","revision":"main/a1b2c3d"
 ```
 

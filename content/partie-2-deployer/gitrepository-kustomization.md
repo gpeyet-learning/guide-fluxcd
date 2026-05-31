@@ -41,7 +41,7 @@ sequenceDiagram
 
 Dans votre dépôt `gitops-fleet`, créez la structure suivante :
 
-```
+```text
 gitops-fleet/
 ├── clusters/
 │   └── local/

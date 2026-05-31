@@ -13,7 +13,7 @@ Il existe deux approches principales pour organiser un dépôt GitOps multi-envi
 
 Un dépôt par environnement :
 
-```
+```text
 gitops-staging/    → pointe vers le cluster staging
 gitops-production/ → pointe vers le cluster production
 ```
@@ -25,7 +25,7 @@ gitops-production/ → pointe vers le cluster production
 
 Un seul dépôt, une arborescence par environnement :
 
-```
+```text
 gitops-fleet/
 ├── clusters/
 │   └── local/          # un sous-dossier par cluster
@@ -44,7 +44,7 @@ Ce guide utilise le pattern monorepo — c'est ce que recommande la documentatio
 
 Voici la structure complète vers laquelle vous allez migrer :
 
-```
+```text
 gitops-fleet/
 ├── clusters/
 │   └── local/

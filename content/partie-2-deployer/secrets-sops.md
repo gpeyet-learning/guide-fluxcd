@@ -27,7 +27,7 @@ Committez ça dans Git, et votre secret est exposé à toute personne ayant acc�
 
 [age](https://age-encryption.org/) est un outil de chiffrement moderne et simple. C'est l'algorithme de chiffrement que nous utilisons avec SOPS.
 
-```
+```yaml
 # Avant chiffrement
 API_KEY: "ma-cle-secrete-123"
 
