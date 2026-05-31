@@ -145,7 +145,7 @@ FluxCD détecte le revert et redéploie l'ancienne version. Le rollback prend le
 
 FluxCD peut automatiser les promotions via l'**Image Automation Controller** (couvert en Partie 5). Lorsqu'une nouvelle image passe les tests en staging, un pipeline peut mettre à jour le dépôt Git automatiquement pour déclencher la promotion en production.
 
-> **Exercice** : Simulez une promotion de staging vers production pour la couleur de l'interface Podinfo.
+> **Mise en pratique** : Simulez une promotion de staging vers production pour la couleur de l'interface Podinfo.
 
 <details>
 <summary>Solution</summary>

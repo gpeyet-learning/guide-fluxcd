@@ -225,7 +225,7 @@ kubectl get secret podinfo-secret -n podinfo -o jsonpath='{.data.UI_MESSAGE}' | 
 # Message secret déployé par FluxCD + SOPS
 ```
 
-> **Exercice** : Ajoutez un second secret qui configure le niveau de log de Podinfo, et vérifiez qu'il est appliqué.
+> **Mise en pratique** : Ajoutez un second secret qui configure le niveau de log de Podinfo, et vérifiez qu'il est appliqué.
 
 <details>
 <summary>Solution</summary>

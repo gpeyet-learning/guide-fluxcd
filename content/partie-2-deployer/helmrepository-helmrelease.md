@@ -174,7 +174,7 @@ La commande `flux events` offre une vue plus lisible :
 flux events -n podinfo
 ```
 
-> **Exercice** : Configurez Podinfo avec une interface orange et trois replicas, puis observez le rollout.
+> **Mise en pratique** : Configurez Podinfo avec une interface orange et trois replicas, puis observez le rollout.
 
 <details>
 <summary>Solution</summary>

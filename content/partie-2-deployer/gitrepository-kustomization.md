@@ -199,7 +199,7 @@ flux logs --kind=Kustomization --name=apps -n flux-system
 flux logs --kind=GitRepository --name=flux-system -n flux-system
 ```
 
-> **Exercice** : Modifiez le message affiché par Podinfo et observez FluxCD déployer automatiquement la mise à jour.
+> **Mise en pratique** : Modifiez le message affiché par Podinfo et observez FluxCD déployer automatiquement la mise à jour.
 
 <details>
 <summary>Solution</summary>

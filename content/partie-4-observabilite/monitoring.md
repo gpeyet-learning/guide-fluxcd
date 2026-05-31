@@ -199,7 +199,7 @@ data:
 
 La sidecar Grafana détecte automatiquement ce ConfigMap et importe le dashboard.
 
-> **Exercice** : Observez les métriques FluxCD dans Grafana et identifiez la Kustomization qui a la durée de réconciliation la plus longue.
+> **Mise en pratique** : Observez les métriques FluxCD dans Grafana et identifiez la Kustomization qui a la durée de réconciliation la plus longue.
 
 <details>
 <summary>Solution</summary>

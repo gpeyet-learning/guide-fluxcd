@@ -211,7 +211,7 @@ kubectl get receiver github-receiver -n flux-system \
 
 Configurez ce webhook dans les settings GitHub de votre dépôt `gitops-fleet` avec l'URL complète : `https://votre-cluster/hook/sha256~abc123...`.
 
-> **Exercice** : Configurez une alerte qui notifie uniquement en cas d'erreur sur les HelmRelease de production.
+> **Mise en pratique** : Configurez une alerte qui notifie uniquement en cas d'erreur sur les HelmRelease de production.
 
 <details>
 <summary>Solution</summary>

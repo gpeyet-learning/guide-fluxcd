@@ -255,7 +255,7 @@ kubectl describe canary podinfo -n podinfo-staging | grep -A5 "Events:"
 # Warning  Synced  Canary failed! Scaling down podinfo.podinfo-staging
 ```
 
-> **Exercice** : Modifiez le Canary pour utiliser un incrément de 20% et un maximum de 60%, puis observez la différence de vitesse de déploiement.
+> **Mise en pratique** : Modifiez le Canary pour utiliser un incrément de 20% et un maximum de 60%, puis observez la différence de vitesse de déploiement.
 
 <details>
 <summary>Solution</summary>

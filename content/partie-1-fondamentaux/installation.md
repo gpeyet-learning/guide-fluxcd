@@ -233,7 +233,7 @@ gitops-fleet/
 
 `gotk-sync.yaml` est particulièrement intéressant — c'est le fichier qui dit à FluxCD de surveiller votre dépôt. FluxCD se gère lui-même via GitOps.
 
-> **Exercice** : Explorez les ressources créées par le bootstrap.
+> **Mise en pratique** : Explorez les ressources créées par le bootstrap.
 
 <details>
 <summary>Solution</summary>

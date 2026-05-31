@@ -184,7 +184,7 @@ git log --oneline
 
 Et FluxCD déploie la nouvelle version sans aucune intervention humaine.
 
-> **Exercice** : Configurez une politique qui suit uniquement les versions de Podinfo en `6.6.x` (branche mineure fixée).
+> **Mise en pratique** : Configurez une politique qui suit uniquement les versions de Podinfo en `6.6.x` (branche mineure fixée).
 
 <details>
 <summary>Solution</summary>

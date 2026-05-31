@@ -164,7 +164,7 @@ flux resume helmrelease podinfo -n podinfo-staging
 
 La suspension est une mesure temporaire d'urgence — elle ne doit pas rester active longtemps.
 
-> **Exercice** : Configurez une HelmRelease avec un rollback automatique et simulez un échec d'upgrade pour observer le comportement.
+> **Mise en pratique** : Configurez une HelmRelease avec un rollback automatique et simulez un échec d'upgrade pour observer le comportement.
 
 <details>
 <summary>Solution</summary>

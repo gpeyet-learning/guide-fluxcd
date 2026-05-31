@@ -214,7 +214,7 @@ Vérifiez les values effectivement utilisées dans la HelmRelease :
 kubectl get helmrelease podinfo -n podinfo-staging -o yaml | grep -A5 "values:"
 ```
 
-> **Exercice** : Ajoutez une variable `PODINFO_LOG_LEVEL` différente par environnement (`debug` en staging, `info` en production) et injectez-la dans la HelmRelease.
+> **Mise en pratique** : Ajoutez une variable `PODINFO_LOG_LEVEL` différente par environnement (`debug` en staging, `info` en production) et injectez-la dans la HelmRelease.
 
 <details>
 <summary>Solution</summary>

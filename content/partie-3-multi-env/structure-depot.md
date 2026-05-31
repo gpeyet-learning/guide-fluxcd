@@ -276,7 +276,7 @@ kubectl port-forward svc/podinfo 9899:9898 -n podinfo-production
 [http://localhost:9898](http://localhost:9898) → staging, fond bleu.
 [http://localhost:9899](http://localhost:9899) → production, fond vert.
 
-> **Exercice** : Ajoutez un troisième environnement `development` avec Podinfo en rouge et un seul replica.
+> **Mise en pratique** : Ajoutez un troisième environnement `development` avec Podinfo en rouge et un seul replica.
 
 <details>
 <summary>Solution</summary>
