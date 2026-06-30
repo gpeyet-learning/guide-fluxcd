@@ -10,6 +10,7 @@ Ce dernier chapitre couvre les patterns qui font la différence entre une instal
 Dans un cluster avec plusieurs Kustomizations, l'ordre de déploiement est important. Une application ne doit pas se déployer avant que sa base de données soit prête. `dependsOn` rend ces dépendances explicites.
 
 ```yaml
+---
 # clusters/local/apps.yaml
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -46,6 +47,7 @@ graph TD
 Pour les clusters avec de nombreuses variables partagées, centralisez-les dans un ConfigMap plutôt que de les répéter dans chaque Kustomization :
 
 ```yaml
+---
 # infrastructure/configs/cluster-vars.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -108,6 +110,7 @@ Dans un cluster partagé entre plusieurs équipes, vous pouvez restreindre ce qu
 Pour restreindre une Kustomization à un namespace spécifique :
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -127,6 +130,7 @@ spec:
 Créez le ServiceAccount avec des droits limités :
 
 ```yaml
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -172,6 +176,7 @@ flux resume kustomization apps-staging
 FluxCD v2 supporte les **OCI artifacts** — des images OCI qui contiennent des manifests Kubernetes au lieu de code applicatif. C'est une alternative à Git pour distribuer des configurations :
 
 ```yaml
+---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:

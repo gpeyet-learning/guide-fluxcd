@@ -51,6 +51,7 @@ flux check
 L'ImageRepository scanne `ghcr.io/stefanprodan/podinfo` pour lister tous les tags disponibles :
 
 ```yaml
+---
 # infrastructure/image-automation/imagerepository-podinfo.yaml
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
@@ -75,6 +76,7 @@ flux get image repository podinfo -n flux-system
 L'ImagePolicy sélectionne le tag à utiliser. Pour Podinfo, on veut la dernière version stable en semver `6.x` :
 
 ```yaml
+---
 # infrastructure/image-automation/imagepolicy-podinfo.yaml
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
@@ -123,6 +125,7 @@ Le commentaire `{"$imagepolicy": "flux-system:podinfo:tag"}` indique à l'ImageU
 ## Créer l'ImageUpdateAutomation
 
 ```yaml
+---
 # infrastructure/image-automation/imageupdateautomation.yaml
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
@@ -192,6 +195,7 @@ Et FluxCD déploie la nouvelle version sans aucune intervention humaine.
 Modifiez `infrastructure/image-automation/imagepolicy-podinfo.yaml` :
 
 ```yaml
+---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:

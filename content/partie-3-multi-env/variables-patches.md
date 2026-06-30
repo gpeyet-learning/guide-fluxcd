@@ -11,7 +11,7 @@ Les post-build substitutions permettent de définir des variables dans la `Kusto
 
 ```mermaid
 graph LR
-    GIT[Manifest Git\ncolor: ${UI_COLOR}] -->|Kustomize render| TEMPLATE[Manifest rendu\ncolor: ${UI_COLOR}]
+    GIT["Manifest Git\ncolor: ${UI_COLOR}"] -->|Kustomize render| TEMPLATE["Manifest rendu\ncolor: ${UI_COLOR}"]
     VARS[Variables FluxCD\nUI_COLOR: '#27ae60'] -->|post-build substitution| RESULT[Manifest final\ncolor: '#27ae60']
     TEMPLATE --> RESULT
     RESULT -->|kubectl apply| K8S[Kubernetes]
@@ -22,37 +22,51 @@ graph LR
 Modifiez `clusters/local/apps.yaml` pour ajouter des variables par environnement :
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
+
 metadata:
   name: apps-staging
   namespace: flux-system
+
 spec:
   interval: 10m
+
   sourceRef:
     kind: GitRepository
     name: flux-system
+
   path: ./apps/staging
   prune: true
+  wait: true
+
   postBuild:
     substitute:
       ENV_NAME: staging
       PODINFO_COLOR: "#4287f5"
-      PODINFO_MESSAGE: "staging — ${ENV_NAME}"
+      PODINFO_MESSAGE: "staging — en cours de test"
       PODINFO_REPLICAS: "1"
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
+
 metadata:
   name: apps-production
   namespace: flux-system
+
 spec:
   interval: 10m
+
   sourceRef:
     kind: GitRepository
     name: flux-system
+
   path: ./apps/production
   prune: true
+  wait: true
+
   postBuild:
     substitute:
       ENV_NAME: production
@@ -65,11 +79,13 @@ spec:
 
 Maintenant que les variables sont définies dans la Kustomization FluxCD, les overlays `staging/` et `production/` peuvent être simplifiés. Au lieu de dupliquer des patches, ils utilisent simplement les variables.
 
-Simplifiez `apps/staging/podinfo/kustomization.yaml` :
+Simplifiez `apps/staging/podinfo/kustomization.yaml` et `apps/production/podinfo/kustomization.yaml` :
 
 ```yaml
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - ../../base/podinfo
 ```
@@ -77,13 +93,17 @@ resources:
 Modifiez `apps/base/podinfo/helmrelease.yaml` pour utiliser les variables :
 
 ```yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
+
 metadata:
   name: podinfo
   namespace: podinfo-${ENV_NAME}
+
 spec:
   interval: 10m
+
   chart:
     spec:
       chart: podinfo
@@ -92,6 +112,7 @@ spec:
         kind: HelmRepository
         name: podinfo
         namespace: flux-system
+
   values:
     replicaCount: ${PODINFO_REPLICAS}
     ui:
@@ -102,8 +123,10 @@ spec:
 Et `apps/base/podinfo/namespace.yaml` :
 
 ```yaml
+---
 apiVersion: v1
 kind: Namespace
+
 metadata:
   name: podinfo-${ENV_NAME}
 ```
@@ -115,12 +138,15 @@ La base est maintenant un template paramétré. Les overlays ne font plus que po
 Pour des variables plus complexes ou partagées entre plusieurs Kustomizations, vous pouvez les stocker dans un `ConfigMap` ou un `Secret` et les référencer :
 
 ```yaml
+---
 # infrastructure/configs/env-staging.yaml
 apiVersion: v1
 kind: ConfigMap
+
 metadata:
   name: cluster-vars
   namespace: flux-system
+
 data:
   ENV_NAME: staging
   PODINFO_COLOR: "#4287f5"
@@ -147,12 +173,15 @@ Vous avez deux façons de patcher des manifests Kubernetes avec Kustomize.
 Syntaxe naturelle YAML, fonctionne bien pour les objets imbriqués :
 
 ```yaml
+---
 # patch-replicas.yaml
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: podinfo
   namespace: podinfo-staging
+
 spec:
   replicas: 3
 ```

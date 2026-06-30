@@ -66,6 +66,7 @@ Il gère quatre types de sources :
 Quand une nouvelle version est détectée (nouveau commit, nouveau tag, nouvelle version de chart), le Source Controller télécharge l'artefact et le met à disposition des autres controllers via un artifact local.
 
 ```yaml
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
@@ -85,6 +86,7 @@ Le Kustomize Controller consomme les artefacts produits par le Source Controller
 Sa ressource principale est la `Kustomization` (attention : ce n'est pas la même que `kustomize.config.k8s.io/v1beta1/Kustomization` de l'outil `kustomize` — c'est une ressource FluxCD).
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -107,6 +109,7 @@ Le champ `prune: true` est important : si vous supprimez un fichier du dépôt G
 Le Helm Controller gère le cycle de vie des **releases Helm**. Il utilise lui aussi les artefacts du Source Controller, mais au lieu d'appliquer des manifests bruts, il exécute les opérations Helm (install, upgrade, rollback).
 
 ```yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:

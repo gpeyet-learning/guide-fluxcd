@@ -27,12 +27,12 @@ Un seul dépôt, une arborescence par environnement :
 
 ```text
 gitops-fleet/
-├── clusters/
-│   └── local/          # un sous-dossier par cluster
-└── apps/
-    ├── base/           # configuration commune
-    ├── staging/        # surcharges staging
-    └── production/     # surcharges production
+├── apps/
+│   ├── base/           # configuration commune
+│   ├── production/     # surcharges production
+│   └── staging/        # surcharges staging
+└── clusters/
+    └── local/          # un sous-dossier par cluster
 ```
 
 **Avantages** : vue d'ensemble, changements atomiques, historique unifié.
@@ -46,40 +46,40 @@ Voici la structure complète vers laquelle vous allez migrer :
 
 ```text
 gitops-fleet/
+├── apps/
+│   ├── base/
+│   │   └── podinfo/
+│   │       ├── kustomization.yaml
+│   │       ├── namespace.yaml
+│   │       └── helmrelease.yaml  (config commune)
+│   ├── production/
+│   │    └── podinfo/
+│   │       ├── kustomization.yaml
+│   │       └── values.yaml       (surcharges production)
+│   └── staging/
+│       └── podinfo/
+│           ├── kustomization.yaml
+│           └── values.yaml       (surcharges staging)
 ├── clusters/
 │   └── local/
 │       ├── flux-system/         (existant)
 │       ├── infrastructure.yaml  (existant)
 │       └── apps.yaml            (à modifier)
-├── infrastructure/
-│   └── sources/
-│       └── podinfo.yaml         (existant)
-└── apps/
-    ├── base/
-    │   └── podinfo/
-    │       ├── kustomization.yaml
-    │       ├── namespace.yaml
-    │       └── helmrelease.yaml  (config commune)
-    ├── staging/
-    │   └── podinfo/
-    │       ├── kustomization.yaml
-    │       └── values.yaml       (surcharges staging)
-    └── production/
-        └── podinfo/
-            ├── kustomization.yaml
-            └── values.yaml       (surcharges production)
+└── infrastructure/
+    └── sources/
+        └── podinfo.yaml         (existant)
 ```
 
 ## La logique base / overlay
 
 ```mermaid
-graph TD
+graph BT
     BASE[apps/base/podinfo\nConfiguration commune\nchart, version, valeurs par défaut]
     STAGING[apps/staging/podinfo\nSurcharges staging\ncouleur bleue, 1 replica]
     PROD[apps/production/podinfo\nSurcharges production\ncouleur verte, 2 replicas]
 
-    BASE -->|étend| STAGING
-    BASE -->|étend| PROD
+    STAGING -->|étend| BASE
+    PROD -->|étend| BASE
 ```
 
 `base/` contient ce qui est commun aux deux environnements. `staging/` et `production/` ne contiennent que les **différences** par rapport à la base.
@@ -91,8 +91,10 @@ graph TD
 Créez `apps/base/podinfo/namespace.yaml` :
 
 ```yaml
+---
 apiVersion: v1
 kind: Namespace
+
 metadata:
   name: podinfo-staging
 ```
@@ -100,13 +102,17 @@ metadata:
 Créez `apps/base/podinfo/helmrelease.yaml` (configuration commune) :
 
 ```yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
+
 metadata:
   name: podinfo
   namespace: podinfo-staging
+
 spec:
   interval: 10m
+
   chart:
     spec:
       chart: podinfo
@@ -115,6 +121,7 @@ spec:
         kind: HelmRepository
         name: podinfo
         namespace: flux-system
+
   values:
     replicaCount: 1
     ui:
@@ -125,8 +132,10 @@ spec:
 Créez `apps/base/podinfo/kustomization.yaml` (point d'entrée Kustomize) :
 
 ```yaml
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - namespace.yaml
   - helmrelease.yaml
@@ -134,22 +143,16 @@ resources:
 
 ### Étape 2 — Créer l'overlay staging
 
-Créez `apps/staging/podinfo/values.yaml` (valeurs de surcharge) :
-
-```yaml
-replicaCount: 1
-ui:
-  color: "#4287f5"
-  message: "staging — en cours de test"
-```
-
 Créez `apps/staging/podinfo/kustomization.yaml` :
 
 ```yaml
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - ../../base/podinfo
+
 patches:
   - patch: |
       - op: replace
@@ -163,6 +166,7 @@ patches:
         value: podinfo-staging
     target:
       kind: HelmRelease
+
   - patch: |
       - op: replace
         path: /metadata/name
@@ -176,10 +180,13 @@ patches:
 Créez `apps/production/podinfo/kustomization.yaml` :
 
 ```yaml
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - ../../base/podinfo
+
 patches:
   - patch: |
       - op: replace
@@ -196,6 +203,7 @@ patches:
         value: podinfo-production
     target:
       kind: HelmRelease
+
   - patch: |
       - op: replace
         path: /metadata/name
@@ -209,30 +217,40 @@ patches:
 Modifiez `clusters/local/apps.yaml` pour pointer vers les deux environnements séparément :
 
 ```yaml
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: apps-staging
-  namespace: flux-system
-spec:
-  interval: 10m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./apps/staging
-  prune: true
-  wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
+
 metadata:
-  name: apps-production
+  name: apps-staging
   namespace: flux-system
+
 spec:
   interval: 10m
+
   sourceRef:
     kind: GitRepository
     name: flux-system
+
+  path: ./apps/staging
+  prune: true
+  wait: true
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+
+metadata:
+  name: apps-production
+  namespace: flux-system
+
+spec:
+  interval: 10m
+
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
   path: ./apps/production
   prune: true
   wait: true
@@ -284,6 +302,7 @@ kubectl port-forward svc/podinfo 9899:9898 -n podinfo-production
 Créez `apps/development/podinfo/kustomization.yaml` :
 
 ```yaml
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:

@@ -23,34 +23,39 @@ Supprimez `apps/podinfo/deployment.yaml` et `apps/podinfo/service.yaml` de votre
 
 ## Ajouter le HelmRepository Podinfo
 
-Un `HelmRepository` indique à FluxCD où trouver les charts Helm. Podinfo utilise un registre OCI hébergé sur ghcr.io :
+Un `HelmRepository` indique à FluxCD où trouver les charts Helm. Podinfo utilise un registre OCI hébergé sur `ghcr.io`.
+
+Créez le dossier `infrastructure/sources/` dans votre dépôt et ajoutez-y le fichier `podinfo.yaml`.
 
 ```yaml
-# infrastructure/sources/podinfo.yaml
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
+
 metadata:
   name: podinfo
   namespace: flux-system
+
 spec:
   type: oci
   interval: 10m
   url: oci://ghcr.io/stefanprodan/charts
 ```
 
-Créez le dossier `infrastructure/sources/` dans votre dépôt et ajoutez ce fichier.
-
 ## Créer la Kustomization pour l'infrastructure
 
-Vous avez besoin d'une Kustomization FluxCD pour que FluxCD applique ce nouveau dossier. Ajoutez dans `clusters/local/` :
+Vous avez besoin d'une Kustomization FluxCD pour que FluxCD applique ce nouveau dossier. Ajoutez dans `clusters/local/`
+le fichier `infrastructure.yaml` :
 
 ```yaml
-# clusters/local/infrastructure.yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
+
 metadata:
   name: infrastructure
   namespace: flux-system
+
 spec:
   interval: 10m
   sourceRef:
@@ -62,17 +67,21 @@ spec:
 
 ## Créer la HelmRelease
 
-Une `HelmRelease` décrit l'installation d'un chart Helm avec ses valeurs de configuration :
+Une `HelmRelease` décrit l'installation d'un chart Helm avec ses valeurs de configuration.
+Créez le fichier `apps/podinfo/helmrelease.yaml` :
 
 ```yaml
-# apps/podinfo/helmrelease.yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
+
 metadata:
   name: podinfo
   namespace: podinfo
+
 spec:
   interval: 10m
+
   chart:
     spec:
       chart: podinfo
@@ -81,6 +90,7 @@ spec:
         kind: HelmRepository
         name: podinfo
         namespace: flux-system
+
   values:
     replicaCount: 1
     ui:
@@ -182,6 +192,7 @@ flux events -n podinfo
 Modifiez `apps/podinfo/helmrelease.yaml` :
 
 ```yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:

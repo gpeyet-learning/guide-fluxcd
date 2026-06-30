@@ -5,7 +5,7 @@ weight: 40
 
 FluxCD est installé. Il est temps de déployer une première application. Ce chapitre présente les deux ressources fondamentales de FluxCD : `GitRepository` (source) et `Kustomization` (réconciliation). Vous déployez Podinfo via des manifests Kubernetes bruts pour bien comprendre le mécanisme avant d'introduire Helm.
 
-## Podinfo, l'application d'exemple
+## Présentation de Podinfo
 
 [Podinfo](https://github.com/stefanprodan/podinfo) est une petite application web créée par Stefan Prodan — l'auteur de FluxCD. Elle est conçue spécifiquement pour démontrer des concepts Kubernetes et GitOps.
 
@@ -57,9 +57,10 @@ gitops-fleet/
 Créez le namespace :
 
 ```yaml
-# apps/podinfo/namespace.yaml
+---
 apiVersion: v1
 kind: Namespace
+
 metadata:
   name: podinfo
 ```
@@ -67,57 +68,71 @@ metadata:
 Créez le déploiement :
 
 ```yaml
-# apps/podinfo/deployment.yaml
+---
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: podinfo
   namespace: podinfo
+
 spec:
   replicas: 1
+
   selector:
     matchLabels:
       app: podinfo
+
   template:
     metadata:
       labels:
         app: podinfo
+
     spec:
       containers:
         - name: podinfo
           image: ghcr.io/stefanprodan/podinfo:6.7.0
+
           ports:
-            - containerPort: 9898
+            - name: web
+              containerPort: 9898
+
           env:
             - name: PODINFO_UI_COLOR
               value: "#4287f5"
             - name: PODINFO_UI_MESSAGE
               value: "Bienvenue dans mon premier déploiement GitOps !"
+
           readinessProbe:
             httpGet:
               path: /readyz
-              port: 9898
+              port: web
+
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 9898
+              port: web
 ```
 
 Créez le service :
 
 ```yaml
-# apps/podinfo/service.yaml
+---
 apiVersion: v1
 kind: Service
+
 metadata:
   name: podinfo
   namespace: podinfo
+
 spec:
   selector:
     app: podinfo
+
   ports:
-    - port: 9898
-      targetPort: 9898
+    - name: web
+      port: 9898
+      targetPort: web
 ```
 
 ## Créer la Kustomization FluxCD
@@ -125,18 +140,22 @@ spec:
 Le fichier `clusters/local/apps.yaml` est ce qui **connecte** FluxCD à votre dossier `apps/podinfo/`. C'est une ressource `Kustomization` de FluxCD (pas de Kustomize) :
 
 ```yaml
-# clusters/local/apps.yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
+
 metadata:
   name: apps
   namespace: flux-system
+
 spec:
-  interval: 10m
   sourceRef:
     kind: GitRepository
-    name: flux-system # le GitRepository créé par le bootstrap
+    name: flux-system
+
   path: ./apps
+
+  interval: 10m
   prune: true
   wait: true
   timeout: 2m

@@ -28,6 +28,7 @@ La stack [kube-prometheus-stack](https://github.com/prometheus-community/helm-ch
 Ajoutez le HelmRepository pour prometheus-community :
 
 ```yaml
+---
 # infrastructure/sources/prometheus-community.yaml
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -42,6 +43,7 @@ spec:
 Créez le namespace et la HelmRelease :
 
 ```yaml
+---
 # infrastructure/monitoring/namespace.yaml
 apiVersion: v1
 kind: Namespace
@@ -50,6 +52,7 @@ metadata:
 ```
 
 ```yaml
+---
 # infrastructure/monitoring/helmrelease.yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -86,6 +89,7 @@ spec:
 Ajoutez un `kustomization.yaml` dans `infrastructure/monitoring/` :
 
 ```yaml
+---
 # infrastructure/monitoring/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -97,6 +101,7 @@ resources:
 Mettez à jour `clusters/local/infrastructure.yaml` pour inclure monitoring :
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -118,6 +123,7 @@ spec:
 Pour que Prometheus scrape les métriques FluxCD, créez des `ServiceMonitor` :
 
 ```yaml
+---
 # infrastructure/monitoring/flux-monitors.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -184,6 +190,7 @@ Vous obtenez une vue complète de toutes vos Kustomizations et HelmReleases avec
 Pour gérer les dashboards Grafana via GitOps (comme le reste), stockez-les dans des `ConfigMap` avec le label approprié :
 
 ```yaml
+---
 # infrastructure/monitoring/dashboard-flux.yaml
 apiVersion: v1
 kind: ConfigMap

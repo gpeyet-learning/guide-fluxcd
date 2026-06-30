@@ -35,6 +35,7 @@ kubectl create secret generic github-token \
 Chiffrez-le avec SOPS si vous le committez dans le dépôt :
 
 ```yaml
+---
 # infrastructure/notifications/secret-github.yaml
 apiVersion: v1
 kind: Secret
@@ -52,6 +53,7 @@ sops --encrypt --in-place infrastructure/notifications/secret-github.yaml
 Créez le Provider :
 
 ```yaml
+---
 # infrastructure/notifications/provider-github.yaml
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
@@ -70,6 +72,7 @@ spec:
 Une `Alert` écoute des événements FluxCD et les envoie au Provider. Configurez-la pour notifier sur tous les changements de `HelmRelease` :
 
 ```yaml
+---
 # infrastructure/notifications/alert-staging.yaml
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
@@ -96,6 +99,7 @@ spec:
 Créez `clusters/local/notifications.yaml` :
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -141,6 +145,7 @@ Déclenchez un déploiement (modifiez un message Podinfo) et regardez les statut
 Pour notifier un channel Slack, utilisez un webhook entrant :
 
 ```yaml
+---
 # infrastructure/notifications/provider-slack.yaml
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
@@ -157,6 +162,7 @@ spec:
 Le Secret `slack-webhook` contient la clé `address` avec l'URL du webhook Slack :
 
 ```yaml
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -173,6 +179,7 @@ Chiffrez-le avec SOPS avant de le committer.
 Par défaut, FluxCD poll Git toutes les 1 à 10 minutes. Si vous voulez une réconciliation instantanée à chaque push, configurez un `Receiver` — un webhook que GitHub appellera à chaque push.
 
 ```yaml
+---
 # infrastructure/notifications/receiver-github.yaml
 apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Receiver
@@ -219,6 +226,7 @@ Configurez ce webhook dans les settings GitHub de votre dépôt `gitops-fleet` a
 Créez `infrastructure/notifications/alert-production-errors.yaml` :
 
 ```yaml
+---
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:

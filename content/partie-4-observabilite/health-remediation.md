@@ -10,6 +10,7 @@ FluxCD peut surveiller l'état de santé des ressources qu'il déploie et décle
 Par défaut, FluxCD applique les manifests et passe à la suite sans vérifier que les pods démarrent correctement. Le champ `wait: true` change ce comportement : FluxCD attend que toutes les ressources soient `Ready` avant de marquer la Kustomization comme réussie.
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -43,6 +44,7 @@ healthChecks:
 La `HelmRelease` offre des options de remédiation détaillées pour gérer les échecs d'install et d'upgrade.
 
 ```yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -134,6 +136,7 @@ git push
 Pour des applications avec des dépendances (une app qui nécessite une base de données disponible), le champ `dependsOn` garantit l'ordre de réconciliation :
 
 ```yaml
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -172,6 +175,7 @@ La suspension est une mesure temporaire d'urgence — elle ne doit pas rester ac
 Mettez à jour `apps/base/podinfo/helmrelease.yaml` pour activer la remédiation complète :
 
 ```yaml
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:

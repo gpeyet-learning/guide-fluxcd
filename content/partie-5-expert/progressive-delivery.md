@@ -33,6 +33,7 @@ Flagger nécessite un service mesh ou un ingress controller pour le traffic spli
 Ajoutez les sources Helm :
 
 ```yaml
+---
 # infrastructure/sources/flagger.yaml
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -45,6 +46,7 @@ spec:
 ```
 
 ```yaml
+---
 # infrastructure/sources/ingress-nginx.yaml
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -59,6 +61,7 @@ spec:
 Déployez Nginx Ingress Controller :
 
 ```yaml
+---
 # infrastructure/ingress-nginx/namespace.yaml
 apiVersion: v1
 kind: Namespace
@@ -67,6 +70,7 @@ metadata:
 ```
 
 ```yaml
+---
 # infrastructure/ingress-nginx/helmrelease.yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -92,6 +96,7 @@ spec:
 Déployez Flagger :
 
 ```yaml
+---
 # infrastructure/flagger/namespace.yaml
 apiVersion: v1
 kind: Namespace
@@ -100,6 +105,7 @@ metadata:
 ```
 
 ```yaml
+---
 # infrastructure/flagger/helmrelease.yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -131,6 +137,7 @@ Committez tout cela et laissez FluxCD déployer.
 La ressource `Canary` de Flagger décrit la stratégie de déploiement progressif :
 
 ```yaml
+---
 # apps/base/podinfo/canary.yaml
 apiVersion: flagger.app/v1beta1
 kind: Canary
@@ -189,6 +196,7 @@ Flagger crée automatiquement :
 Le load tester génère du trafic pendant l'analyse canary — indispensable pour avoir des métriques significatives :
 
 ```yaml
+---
 # infrastructure/flagger/loadtester.yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
