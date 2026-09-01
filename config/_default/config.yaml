@@ -1,0 +1,39 @@
+baseURL: "https://learning.peyet.ddns.net/fluxcd/"
+title: "GitOps avec FluxCD"
+languageCode: fr
+defaultContentLanguage: fr
+
+disableKinds:
+  - taxonomy
+  - term
+
+module:
+  imports:
+    - path: github.com/gpeyet-learning/guides-theme
+
+markup:
+  highlight:
+    noClasses: false
+    codeFences: true
+    lineNos: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
+  goldmark:
+    renderer:
+      unsafe: true
+
+params:
+  description: "Apprenez à mettre en place une chaîne GitOps complète avec FluxCD sur Kubernetes, du déploiement automatisé à la gestion avancée des environnements."
+  tags:
+    - fluxcd
+    - kubernetes
+    - gitops
+    - devops
+  prerequisites:
+    - label: "Bases de Kubernetes"
+      url: "https://kubernetes.io/fr/docs/tutorials/kubernetes-basics/"
+      external: true
+    - label: "Notions de Git"
+      url: "https://git-scm.com/book/fr/v2"
+      external: true

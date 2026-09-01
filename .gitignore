@@ -1,0 +1,6 @@
+public/
+resources/
+.hugo_build.lock
+
+# Linter configs injected by CI
+.github/linters/
